@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'signing'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 
@@ -38,4 +39,52 @@ task sourcesJar(type: Jar) {
 
 artifacts {
     archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Neo-Fuzzy-Neuron'
+                packaging 'jar'
+                description 'A simple library that describes neo-fuzzy-neuron as part of hybrid neural network based system modeling.'
+                url 'https://github.com/fixedorgo/neo-fuzzy-neuron'
+
+                scm {
+                    connection 'scm:git:git@github.com:fixedorgo/neo-fuzzy-neuron.git'
+                    developerConnection 'scm:git:git@github.com:fixedorgo/neo-fuzzy-neuron.git'
+                    url 'git@github.com:fixedorgo/neo-fuzzy-neuron.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'fixedorgo'
+                        name 'Timur Zagorskiy'
+                        email 'timur.zagorskiy@gmail.com'
+                    }
+                }
+            }
+        }
+    }
 }
