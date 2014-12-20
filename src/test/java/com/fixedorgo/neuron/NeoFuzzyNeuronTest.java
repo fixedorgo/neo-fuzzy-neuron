@@ -327,6 +327,20 @@ public class NeoFuzzyNeuronTest {
     }
 
     @Test
+    public void neuronHashCodeTest() {
+        ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
+        ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
+        ImplicationRule rule3 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));
+        Synapse synapse1 = new Synapse("Cats", newLinkedHashSet(asList(rule1)));
+        Synapse synapse2 = new Synapse("Cats", newLinkedHashSet(asList(rule2)));
+        Synapse synapse3 = new Synapse("Ducks", newLinkedHashSet(asList(rule3)));
+        NeoFuzzyNeuron neuron1 = new NeoFuzzyNeuron(ImmutableMap.of("Cats", synapse1));
+        NeoFuzzyNeuron neuron2 = new NeoFuzzyNeuron(ImmutableMap.of("Cats", synapse2));
+        NeoFuzzyNeuron neuron3 = new NeoFuzzyNeuron(ImmutableMap.of("Ducks", synapse3));
+        assertThat(neuron1.hashCode()).isEqualTo(neuron2.hashCode()).isNotEqualTo(neuron3.hashCode());
+    }
+
+    @Test
     public void neuronToStringTest() {
         ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));

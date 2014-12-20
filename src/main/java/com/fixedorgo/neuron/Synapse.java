@@ -28,7 +28,7 @@ import static java.util.Arrays.asList;
  * Nonlinear synapse as a part of Neo-Fuzzy-Neuron inference. The nonlinear synapse
  * is realized by a set of Fuzzy Implication Rules.
  *
- * @author Timur Zagorskiy
+ * @author Timur Zagorsky
  * @since 0.1
  */
 public class Synapse {
@@ -206,7 +206,6 @@ public class Synapse {
     @Override
     public int hashCode() {
         int result = 17;
-        result = 37 * result + name.hashCode();
         for (ImplicationRule rule : rules)
             result = 37 * result + rule.hashCode();
         return result;

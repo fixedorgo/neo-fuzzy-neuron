@@ -19,7 +19,7 @@ package com.fixedorgo.neuron;
  * Representation of the Fuzzy Implication Rule as a part
  * of Fuzzy Inference in the Neo-Fuzzy-Neuron's Synapse
  *
- * @author Timur Zagorskiy
+ * @author Timur Zagorsky
  * @since 0.1
  */
 public interface ImplicationRule {

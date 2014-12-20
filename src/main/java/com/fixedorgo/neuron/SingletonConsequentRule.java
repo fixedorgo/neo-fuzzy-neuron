@@ -28,7 +28,7 @@ package com.fixedorgo.neuron;
  *
  * <p>Implements {@link ImplicationRule} interface
  *
- * @author Timur Zagorskiy
+ * @author Timur Zagorsky
  * @since 0.1
  */
 public class SingletonConsequentRule implements ImplicationRule {
@@ -66,8 +66,6 @@ public class SingletonConsequentRule implements ImplicationRule {
     public int hashCode() {
         int result = 17;
         result = 37 * result + function.hashCode();
-        long l = Double.doubleToLongBits(weight);
-        result = 37 * result + (int) (l ^ (l >>> 32));
         return result;
     }
 

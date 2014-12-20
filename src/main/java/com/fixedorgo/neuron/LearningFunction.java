@@ -23,7 +23,7 @@ package com.fixedorgo.neuron;
  * <p>The only reason not to use classic Guava {@link com.google.common.base.Function} interface
  * is desire to return double value instead of autoboxed Double.
  *
- * @author Timur Zagorskiy
+ * @author Timur Zagorsky
  * @since 0.1
  */
 public interface LearningFunction {

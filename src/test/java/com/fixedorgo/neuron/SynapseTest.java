@@ -160,6 +160,17 @@ public class SynapseTest {
     }
 
     @Test
+    public void synapseHashCodeTest() {
+        ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
+        ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
+        ImplicationRule rule3 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));
+        Synapse synapse1 = new Synapse("Cats", newLinkedHashSet(asList(rule1)));
+        Synapse synapse2 = new Synapse("Dogs", newLinkedHashSet(asList(rule2)));
+        Synapse synapse3 = new Synapse("Ducks", newLinkedHashSet(asList(rule3)));
+        assertThat(synapse1.hashCode()).isEqualTo(synapse2.hashCode()).isNotEqualTo(synapse3.hashCode());
+    }
+
+    @Test
     public void synapseToStringTest() {
         ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));

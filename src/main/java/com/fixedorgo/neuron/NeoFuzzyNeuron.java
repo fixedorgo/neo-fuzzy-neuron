@@ -32,7 +32,7 @@ import static java.lang.Math.pow;
  * highly recommended to use {@link NeuronBuilder} and
  * {@link com.fixedorgo.neuron.NeoFuzzyNeuron.Input.InputBuilder}
  *
- * @author Timur Zagorskiy
+ * @author Timur Zagorsky
  * @since 0.1
  */
 public class NeoFuzzyNeuron {
@@ -438,6 +438,8 @@ public class NeoFuzzyNeuron {
     @Override
     public int hashCode() {
         int result = 17;
+        for (String key : synapses.keySet())
+            result = 37 * result + key.hashCode();
         for (Synapse synapse : synapses.values())
             result = 37 * result + synapse.hashCode();
         return result;

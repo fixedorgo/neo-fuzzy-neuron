@@ -48,6 +48,14 @@ public class SingletonConsequentRuleTest {
     }
 
     @Test
+    public void ruleHashCodeTest() {
+        ImplicationRule firstRule = new SingletonConsequentRule(new TriangularMembershipFunction(1, 3, 5));
+        ImplicationRule secondRule = new SingletonConsequentRule(new TriangularMembershipFunction(1, 3, 5));
+        ImplicationRule thirdRule = new SingletonConsequentRule(new TriangularMembershipFunction(2, 6, 10));
+        assertThat(firstRule.hashCode()).isEqualTo(secondRule.hashCode()).isNotEqualTo(thirdRule.hashCode());
+    }
+
+    @Test
     public void ruleToStringTest() {
         ImplicationRule rule = new SingletonConsequentRule(new TriangularMembershipFunction(1, 3, 5));
         assertThat(rule.toString()).isEqualTo("Rule: If 'x' is (1.0, 3.0, 5.0) then 'y' is 0.0");

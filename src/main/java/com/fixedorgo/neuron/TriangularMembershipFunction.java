@@ -24,7 +24,7 @@ import static java.util.Arrays.asList;
  *
  * <p>Implements {@link MembershipFunction} interface
  *
- * @author Timur Zagorskiy
+ * @author Timur Zagorsky
  * @since 0.1
  */
 public class TriangularMembershipFunction implements MembershipFunction {

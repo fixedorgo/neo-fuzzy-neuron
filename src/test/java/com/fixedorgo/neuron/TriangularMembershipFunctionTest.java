@@ -35,6 +35,16 @@ public class TriangularMembershipFunctionTest {
     }
 
     @Test
+    public void functionHashCodeTest() {
+        MembershipFunction firstFunction = new TriangularMembershipFunction(0, 2, 4);
+        MembershipFunction secondFunction = new TriangularMembershipFunction(0, 2, 4);
+        MembershipFunction thirdFunction = new TriangularMembershipFunction(1, 3, 5);
+        assertThat(firstFunction.hashCode())
+                .isEqualTo(secondFunction.hashCode())
+                .isNotEqualTo(thirdFunction.hashCode());
+    }
+
+    @Test
     public void functionToStringTest() {
         MembershipFunction function = new TriangularMembershipFunction(0, 2, 4);
         assertThat(function.toString()).isNotEmpty().isEqualTo("(0.0, 2.0, 4.0)");
