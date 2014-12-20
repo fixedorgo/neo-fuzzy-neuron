@@ -44,10 +44,13 @@ public class TriangularMembershipFunction implements MembershipFunction {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof TriangularMembershipFunction &&
-                a == TriangularMembershipFunction.class.cast(obj).a &&
-                b == TriangularMembershipFunction.class.cast(obj).b &&
-                c == TriangularMembershipFunction.class.cast(obj).c;
+        if (obj instanceof TriangularMembershipFunction) {
+            TriangularMembershipFunction function = TriangularMembershipFunction.class.cast(obj);
+            return Double.compare(a, function.a) == 0 &&
+                    Double.compare(b, function.b) == 0 &&
+                    Double.compare(c, function.c) == 0;
+        }
+        return false;
     }
 
     @Override
