@@ -80,8 +80,8 @@ uploadArchives {
                 developers {
                     developer {
                         id 'fixedorgo'
-                        name 'Timur Zagorskiy'
-                        email 'timur.zagorskiy@gmail.com'
+                        name 'Timur Zagorsky'
+                        email 'timur.zagorsky@gmail.com'
                     }
                 }
             }
