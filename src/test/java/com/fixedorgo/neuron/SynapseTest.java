@@ -1,13 +1,12 @@
 package com.fixedorgo.neuron;
 
 import com.fixedorgo.neuron.Synapse.SynapseBuilder;
-import com.google.common.collect.Sets;
 import org.junit.Test;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static com.fixedorgo.neuron.Synapse.synapse;
-import static com.google.common.collect.Sets.newLinkedHashSet;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,7 +35,7 @@ public class SynapseTest {
         ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));
         ImplicationRule rule3 = new SingletonConsequentRule(new TriangularMembershipFunction(3, 4, 5));
-        Synapse synapse = new Synapse("Dogs", newLinkedHashSet(asList(rule1, rule2, rule3)));
+        Synapse synapse = new Synapse("Dogs", new LinkedHashSet<>(asList(rule1, rule2, rule3)));
         assertThat(synapse.apply(5)).isEqualTo(0);
         assertThat(synapse.apply(23.1)).isEqualTo(0);
         assertThat(synapse.apply(-134723.456)).isEqualTo(0);
@@ -47,7 +46,7 @@ public class SynapseTest {
         ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));
         ImplicationRule rule3 = new SingletonConsequentRule(new TriangularMembershipFunction(3, 4, 5));
-        Synapse synapse = new Synapse("Cats", newLinkedHashSet(asList(rule1, rule2, rule3)));
+        Synapse synapse = new Synapse("Cats", new LinkedHashSet<>(asList(rule1, rule2, rule3)));
         assertThat(synapse.fuzzySegment(2)).containsExactly(1, 0);
         assertThat(synapse.fuzzySegment(2.5)).containsExactly(0.5, 0.5);
         assertThat(synapse.fuzzySegment(2.75)).containsExactly(0.25, 0.75);
@@ -64,7 +63,7 @@ public class SynapseTest {
         ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));
         ImplicationRule rule3 = new SingletonConsequentRule(new TriangularMembershipFunction(3, 4, 5));
-        Synapse synapse = new Synapse("Ducks", newLinkedHashSet(asList(rule1, rule2, rule3)));
+        Synapse synapse = new Synapse("Ducks", new LinkedHashSet<>(asList(rule1, rule2, rule3)));
 
         for (int i = 0; i < input.length; i++)
             synapse.learnWith(function(input[i], synapse.apply(input[i]), desiredOutput[i], learningRate));
@@ -133,7 +132,7 @@ public class SynapseTest {
         assertThat(synapse.name).isEqualTo("Liquid");
         assertThat(synapse.rules).hasSize(5);
 
-        Set<MembershipFunction> functions = Sets.newLinkedHashSet();
+        Set<MembershipFunction> functions = new LinkedHashSet<>();
         for (ImplicationRule rule : synapse.rules) {
             assertThat(rule).isExactlyInstanceOf(SingletonConsequentRule.class);
             assertThat(rule.membershipFunction()).isExactlyInstanceOf(TriangularMembershipFunction.class);
@@ -153,9 +152,9 @@ public class SynapseTest {
         ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule3 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));
-        Synapse synapse1 = new Synapse("Cats", newLinkedHashSet(asList(rule1)));
-        Synapse synapse2 = new Synapse("Dogs", newLinkedHashSet(asList(rule2)));
-        Synapse synapse3 = new Synapse("Ducks", newLinkedHashSet(asList(rule3)));
+        Synapse synapse1 = new Synapse("Cats", new LinkedHashSet<>(asList(rule1)));
+        Synapse synapse2 = new Synapse("Dogs", new LinkedHashSet<>(asList(rule2)));
+        Synapse synapse3 = new Synapse("Ducks", new LinkedHashSet<>(asList(rule3)));
         assertThat(synapse1).isEqualTo(synapse2).isNotEqualTo(synapse3);
     }
 
@@ -164,9 +163,9 @@ public class SynapseTest {
         ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule3 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));
-        Synapse synapse1 = new Synapse("Cats", newLinkedHashSet(asList(rule1)));
-        Synapse synapse2 = new Synapse("Dogs", newLinkedHashSet(asList(rule2)));
-        Synapse synapse3 = new Synapse("Ducks", newLinkedHashSet(asList(rule3)));
+        Synapse synapse1 = new Synapse("Cats", new LinkedHashSet<>(asList(rule1)));
+        Synapse synapse2 = new Synapse("Dogs", new LinkedHashSet<>(asList(rule2)));
+        Synapse synapse3 = new Synapse("Ducks", new LinkedHashSet<>(asList(rule3)));
         assertThat(synapse1.hashCode()).isEqualTo(synapse2.hashCode()).isNotEqualTo(synapse3.hashCode());
     }
 
@@ -174,7 +173,7 @@ public class SynapseTest {
     public void synapseToStringTest() {
         ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));
-        Synapse synapse = new Synapse("Cats", newLinkedHashSet(asList(rule1, rule2)));
+        Synapse synapse = new Synapse("Cats", new LinkedHashSet<>(asList(rule1, rule2)));
         assertThat(synapse.toString()).isEqualTo("Synapse: Cats\n" +
                 "\tRule: If 'x' is (1.0, 2.0, 3.0) then 'y' is 0.0\n" +
                 "\tRule: If 'x' is (2.0, 3.0, 4.0) then 'y' is 0.0\n");

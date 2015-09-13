@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Timur Zagorsky
+ * Copyright (C) 2015 Timur Zagorsky
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,12 @@
 package com.fixedorgo.neuron;
 
 import com.fixedorgo.neuron.Synapse.SynapseBuilder;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Math.pow;
 
 /**
@@ -50,10 +49,13 @@ public class NeoFuzzyNeuron {
      * Main static factory method to get new {@link NeoFuzzyNeuron} instance
      * @param synapses that represents input variables, must not be null
      * @return new {@link NeoFuzzyNeuron} instance with provided {@link Synapse}s
+     * @throws NullPointerException if synapses are absent
      */
     public static NeoFuzzyNeuron neuron(Synapse... synapses) {
-        checkNotNull(synapses, "Synapses must not be null");
-        Map<String, Synapse> synapseMap = Maps.newHashMap();
+        if (synapses == null) {
+            throw new NullPointerException("Synapses must not be null");
+        }
+        Map<String, Synapse> synapseMap = new HashMap<>();
         for (Synapse synapse : synapses)
             synapseMap.put(synapse.name.toLowerCase(), synapse);
         return new NeoFuzzyNeuron(synapseMap);
@@ -65,6 +67,8 @@ public class NeoFuzzyNeuron {
      * and summed up. Order of the Inputs is not important.
      * @param inputs values of Neo-Fuzzy-Neuron input signals, must not be null
      * @return Neo-Fuzzy-Neuron output value
+     * @throws NullPointerException in case of null {@link Input}[] inputs
+     * @throws NeuronInputDimensionException if input dimension is not corresponded
      */
     public double calculate(Input[] inputs) {
         checkInputDimension(inputs);
@@ -109,6 +113,8 @@ public class NeoFuzzyNeuron {
      * @param output actual output of the Neo-Fuzzy-Neuron
      * @param trainingData that represents desired output value
      * @param learningRate that is given by some ratio and always greater than 0
+     * @throws NullPointerException in case of null {@link Input}[] inputs
+     * @throws NeuronInputDimensionException if input dimension is not corresponded
      */
     public void learn(Input[] inputs, final double output, final double trainingData, final double learningRate) {
         checkInputDimension(inputs);
@@ -127,6 +133,8 @@ public class NeoFuzzyNeuron {
      * "A Fast Learning Algorithm for Neofuzzy Networks", 1998]. For internal use, at least now.
      * @param inputs array of values to Neo-Fuzzy-Neuron, must not be null
      * @return learning rate calculated value
+     * @throws NullPointerException in case of null {@link Input}[] inputs
+     * @throws NeuronInputDimensionException if input dimension is not corresponded
      */
     protected double optimalLearningRate(Input[] inputs) {
         checkInputDimension(inputs);
@@ -163,9 +171,12 @@ public class NeoFuzzyNeuron {
          * @param synapseName to which Input should be applied, must not be null
          * @param value of the input signal
          * @return new {@link Input} instance
+         * @throws NullPointerException if synapseName is null
          */
         public static Input input(String synapseName, double value) {
-            checkNotNull(synapseName, "Synapse name must not be null");
+            if (synapseName == null) {
+                throw new NullPointerException("Synapse name must not be null");
+            }
             return new Input(synapseName, value);
         }
 
@@ -183,7 +194,7 @@ public class NeoFuzzyNeuron {
          */
         public static class InputBuilder {
 
-            protected Set<Input> inputs = Sets.newHashSet();
+            protected Set<Input> inputs = new HashSet<>();
 
             protected String synapseName;
 
@@ -198,9 +209,12 @@ public class NeoFuzzyNeuron {
              * Set name of the target {@link Synapse}
              * @param synapseName name of the target Synapse, must not be null
              * @return same {@link InputBuilder} instance
+             * @throws NullPointerException if synapseName is null
              */
             public InputBuilder input(String synapseName) {
-                checkNotNull(synapseName, "Synapse name must not be null");
+                if (synapseName == null) {
+                    throw new NullPointerException("Synapse name must not be null");
+                }
                 this.synapseName = synapseName;
                 return this;
             }
@@ -210,9 +224,12 @@ public class NeoFuzzyNeuron {
              * to Inputs collection
              * @param value input signal value
              * @return same {@link InputBuilder} instance
+             * @throws IllegalStateException if a synapse name was not specified first
              */
             public InputBuilder as(double value) {
-                checkNotNull(synapseName, "You must specify Synapse name first via InputBuilder.input() method");
+                if (synapseName == null) {
+                    throw new IllegalStateException("You must specify Synapse name first via InputBuilder.input() method");
+                }
                 inputs.add(new Input(synapseName, value));
                 synapseName = null; // to prevent call of this method twice
                 return this;
@@ -308,7 +325,7 @@ public class NeoFuzzyNeuron {
      */
     public static class NeuronBuilder {
 
-        protected Map<String, Synapse> synapses = Maps.newHashMap();
+        protected Map<String, Synapse> synapses = new HashMap<>();
 
         /**
          * To prevent direct Builder instantiation
@@ -320,10 +337,13 @@ public class NeoFuzzyNeuron {
          * Uses {@link SynapseBuilder} to construct new {@link Synapse} via {@link SynapseBuilderWrapper}
          * @param synapseName for new {@link Synapse}, must not be null
          * @return new {@link SynapseBuilderWrapper} instance
+         * @throws NullPointerException if synapseName is null
          * @throws IllegalArgumentException if such Synapse with same name already created
          */
         public SynapseBuilderWrapper withVariable(String synapseName) {
-            checkNotNull(synapseName, "Synapse name must not be null");
+            if (synapseName == null) {
+                throw new NullPointerException("Synapse name must not be null");
+            }
             if (synapses.containsKey(synapseName.toLowerCase()))
                 throw new IllegalArgumentException(String.format("Synapse with name [%s] is already defined", synapseName));
             return new SynapseBuilderWrapper(new SynapseBuilder(synapseName));
@@ -333,9 +353,12 @@ public class NeoFuzzyNeuron {
          * Uses {@link Synapse} instance directly to construct new {@link Synapse}
          * @param synapse instance that is fully constructed and ready to go, must not be null
          * @return same {@link NeuronBuilder} instance
+         * @throws NullPointerException if synapse is null
          */
         public NeuronBuilder withVariable(Synapse synapse) {
-            checkNotNull(synapse, "Synapse instance must not be null");
+            if (synapse == null) {
+                throw new NullPointerException("Synapse instance must not be null");
+            }
             synapses.put(synapse.name.toLowerCase(), synapse);
             return this;
         }
@@ -394,7 +417,9 @@ public class NeoFuzzyNeuron {
      * @throws SynapseNameNotFoundException if no such Synapse is defined
      */
     protected Synapse synapseFor(Input input) {
-        checkNotNull(input, "Input must not be null");
+        if (input == null) {
+            throw new NullPointerException("Input must not be null");
+        }
         String synapseName = input.synapseName.toLowerCase();
         if (!synapses.containsKey(synapseName))
             throw new SynapseNameNotFoundException(synapseName);
@@ -410,7 +435,9 @@ public class NeoFuzzyNeuron {
      * @throws NeuronInputDimensionException if input dimension is not corresponded
      */
     protected Input[] checkInputDimension(Input[] inputs) {
-        checkNotNull(inputs, "Input[] must not be null");
+        if (inputs == null) {
+            throw new NullPointerException("Input[] must not be null");
+        }
         if (inputs.length != synapses.size())
             throw new NeuronInputDimensionException(inputs.length, synapses.size());
         return inputs;
@@ -432,7 +459,7 @@ public class NeoFuzzyNeuron {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof NeoFuzzyNeuron &&
-                Maps.difference(synapses, NeoFuzzyNeuron.class.cast(obj).synapses).areEqual();
+                synapses.equals(NeoFuzzyNeuron.class.cast(obj).synapses);
     }
 
     @Override
@@ -448,8 +475,9 @@ public class NeoFuzzyNeuron {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Neo-Fuzzy-Neuron:\n");
-        for (Synapse synapse : synapses.values())
+        for (Synapse synapse : synapses.values()) {
             sb.append(synapse);
+        }
         return sb.toString();
     }
 

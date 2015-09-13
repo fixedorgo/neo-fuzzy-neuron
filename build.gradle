@@ -10,7 +10,7 @@ compileJava.options.encoding = 'UTF-8'
 
 group = "com.fixedorgo"
 archivesBaseName = "neo-fuzzy-neuron"
-version = "0.1.0-SNAPSHOT"
+version = "0.1.1-SNAPSHOT"
 description = "A simple library that describes neo-fuzzy-neuron as part of hybrid neural network based system modeling."
 
 repositories {
@@ -18,12 +18,9 @@ repositories {
 }
 
 dependencies {
-    compile (
-        'com.google.guava:guava:18.0'
-    )
     testCompile (
-        'junit:junit:4.11',
-        'org.assertj:assertj-core:1.7.0'
+        'junit:junit:4.12',
+        'org.assertj:assertj-core:2.2.0'
     )
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Timur Zagorsky
+ * Copyright (C) 2015 Timur Zagorsky
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,9 @@
  */
 package com.fixedorgo.neuron;
 
-import com.google.common.collect.Sets;
-
+import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.util.Arrays.asList;
@@ -53,11 +51,16 @@ public class Synapse {
      * @param name of the {@link Synapse} or input variable name, must not be null.
      * @param rules that should be include into the Synapse inference, must not be null
      * @return new {@link Synapse} instance
+     * @throws NullPointerException if name or rules are absent
      */
     public static Synapse synapse(String name, ImplicationRule... rules) {
-        checkNotNull(name, "Synapse name must not be null");
-        checkNotNull(rules, "Implication Rules must not be null");
-        return new Synapse(name, Sets.newLinkedHashSet(asList(rules)));
+        if (name == null) {
+            throw new NullPointerException("Synapse name must not be null");
+        }
+        if (rules == null) {
+            throw new NullPointerException("Implication Rules must not be null");
+        }
+        return new Synapse(name, new LinkedHashSet<>(asList(rules)));
     }
 
     /**
@@ -68,8 +71,9 @@ public class Synapse {
      */
     public double apply(double input) {
         double output = 0;
-        for (ImplicationRule rule : rules)
+        for (ImplicationRule rule : rules) {
             output += rule.evaluate(input);
+        }
         return output;
     }
 
@@ -85,8 +89,9 @@ public class Synapse {
         int index = 0;
         for (ImplicationRule rule : rules) {
             double output = rule.membershipFunction().apply(input);
-            if (output > 0)
+            if (output > 0) {
                 segment[index++] = output;
+            }
         }
         return segment;
     }
@@ -94,20 +99,27 @@ public class Synapse {
     /**
      * Apply given {@link LearningFunction} to adjust parameters of {@link ImplicationRule}s
      * @param learningFunction that implement stepwise learning algorithm, must not be null
+     * @throws NullPointerException if learningFunction is null
      */
     public void learnWith(LearningFunction learningFunction) {
-        checkNotNull(learningFunction, "Learning Function must not be null");
-        for (ImplicationRule rule : rules)
+        if (learningFunction == null) {
+            throw new NullPointerException("Learning Function must not be null");
+        }
+        for (ImplicationRule rule : rules) {
             rule.adjust(learningFunction);
+        }
     }
 
     /**
      * Static access to {@link SynapseBuilder} instance
      * @param synapseName that represents name of the input variable, must not be null
      * @return new instance of {@link SynapseBuilder}
+     * @throws NullPointerException if synapseName is null
      */
     public static SynapseBuilder synapse(String synapseName) {
-        checkNotNull(synapseName, "Synapse name must not be null");
+        if (synapseName == null) {
+            throw new NullPointerException("Synapse name must not be null");
+        }
         return new SynapseBuilder(synapseName);
     }
 
@@ -168,8 +180,9 @@ public class Synapse {
          * @throws IllegalArgumentException in case of incorrect Rules count
          */
         public SynapseBuilder withRulesCount(int count) {
-            if (count < 1)
+            if (count < 1) {
                 throw new IllegalArgumentException("Number of Rules must be at least 1");
+            }
             this.count = count;
             return this;
         }
@@ -184,7 +197,7 @@ public class Synapse {
                 throw new IllegalStateException(String.format("Input signal range [%s, %s] " +
                         "is incorrectly specified.", lower, upper));
             }
-            Set<ImplicationRule> rules = Sets.newLinkedHashSet();
+            Set<ImplicationRule> rules = new LinkedHashSet<>();
             double step = (upper - lower) / (count - 1);
             for (int i = 0; i < count; i++) {
                 double b = lower + step * i;
@@ -200,22 +213,24 @@ public class Synapse {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Synapse &&
-                Sets.difference(rules, Synapse.class.cast(obj).rules).isEmpty();
+                rules.equals(Synapse.class.cast(obj).rules);
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        for (ImplicationRule rule : rules)
+        for (ImplicationRule rule : rules) {
             result = 37 * result + rule.hashCode();
+        }
         return result;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(String.format("Synapse: %s\n", name));
-        for (ImplicationRule rule : rules)
+        for (ImplicationRule rule : rules) {
             sb.append(String.format("\t%s\n", rule));
+        }
         return sb.toString();
     }
 
