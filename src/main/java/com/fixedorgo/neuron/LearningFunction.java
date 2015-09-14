@@ -20,9 +20,6 @@ package com.fixedorgo.neuron;
  * To adjust consequent the only variable we need is membership value of each
  * particular Implication Rule m(x).
  *
- * <p>The only reason not to use classic Guava {@link com.google.common.base.Function} interface
- * is desire to return double value instead of autoboxed Double.
- *
  * @author Timur Zagorsky
  * @since 0.1
  */

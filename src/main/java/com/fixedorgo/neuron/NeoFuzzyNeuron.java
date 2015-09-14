@@ -56,8 +56,9 @@ public class NeoFuzzyNeuron {
             throw new NullPointerException("Synapses must not be null");
         }
         Map<String, Synapse> synapseMap = new HashMap<>();
-        for (Synapse synapse : synapses)
+        for (Synapse synapse : synapses) {
             synapseMap.put(synapse.name.toLowerCase(), synapse);
+        }
         return new NeoFuzzyNeuron(synapseMap);
     }
 
@@ -344,8 +345,9 @@ public class NeoFuzzyNeuron {
             if (synapseName == null) {
                 throw new NullPointerException("Synapse name must not be null");
             }
-            if (synapses.containsKey(synapseName.toLowerCase()))
+            if (synapses.containsKey(synapseName.toLowerCase())) {
                 throw new IllegalArgumentException(String.format("Synapse with name [%s] is already defined", synapseName));
+            }
             return new SynapseBuilderWrapper(new SynapseBuilder(synapseName));
         }
 
@@ -421,8 +423,9 @@ public class NeoFuzzyNeuron {
             throw new NullPointerException("Input must not be null");
         }
         String synapseName = input.synapseName.toLowerCase();
-        if (!synapses.containsKey(synapseName))
+        if (!synapses.containsKey(synapseName)) {
             throw new SynapseNameNotFoundException(synapseName);
+        }
         return synapses.get(synapseName);
     }
 
@@ -438,8 +441,9 @@ public class NeoFuzzyNeuron {
         if (inputs == null) {
             throw new NullPointerException("Input[] must not be null");
         }
-        if (inputs.length != synapses.size())
+        if (inputs.length != synapses.size()) {
             throw new NeuronInputDimensionException(inputs.length, synapses.size());
+        }
         return inputs;
     }
 

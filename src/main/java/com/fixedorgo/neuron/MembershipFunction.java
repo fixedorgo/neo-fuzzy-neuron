@@ -19,9 +19,6 @@ package com.fixedorgo.neuron;
  * Interface for fuzzy Membership Function. Determines an membership degree based
  * on an input signal value.
  *
- * <p>The only reason not to use classic Guava {@link com.google.common.base.Function} interface
- * is desire to return double value instead of autoboxed Double.
- *
  * @author Timur Zagorsky
  * @since 0.1
  */
