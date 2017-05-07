@@ -7,6 +7,7 @@ import com.fixedorgo.neuron.NeoFuzzyNeuron.NeuronInputDimensionException;
 import com.fixedorgo.neuron.NeoFuzzyNeuron.SynapseNameNotFoundException;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
@@ -21,7 +22,7 @@ public class NeoFuzzyNeuronTest {
     @Test
     public void neuronFactoryMethodTest() {
         ImplicationRule rule = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
-        Synapse synapse = new Synapse("Pets", new LinkedHashSet<>(asList(rule)));
+        Synapse synapse = new Synapse("Pets", new LinkedHashSet<>(Collections.singletonList(rule)));
         assertThat(neuron(synapse)).isExactlyInstanceOf(NeoFuzzyNeuron.class);
     }
 
@@ -318,9 +319,9 @@ public class NeoFuzzyNeuronTest {
         ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule3 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));
-        final Synapse synapse1 = new Synapse("Cats", new LinkedHashSet<>(asList(rule1)));
-        final Synapse synapse2 = new Synapse("Cats", new LinkedHashSet<>(asList(rule2)));
-        final Synapse synapse3 = new Synapse("Ducks", new LinkedHashSet<>(asList(rule3)));
+        final Synapse synapse1 = new Synapse("Cats", new LinkedHashSet<>(Collections.singletonList(rule1)));
+        final Synapse synapse2 = new Synapse("Cats", new LinkedHashSet<>(Collections.singletonList(rule2)));
+        final Synapse synapse3 = new Synapse("Ducks", new LinkedHashSet<>(Collections.singletonList(rule3)));
         NeoFuzzyNeuron neuron1 = new NeoFuzzyNeuron(new HashMap<String, Synapse>() {{
             put("Cats", synapse1);
         }});
@@ -338,9 +339,9 @@ public class NeoFuzzyNeuronTest {
         ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule3 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));
-        final Synapse synapse1 = new Synapse("Cats", new LinkedHashSet<>(asList(rule1)));
-        final Synapse synapse2 = new Synapse("Cats", new LinkedHashSet<>(asList(rule2)));
-        final Synapse synapse3 = new Synapse("Ducks", new LinkedHashSet<>(asList(rule3)));
+        final Synapse synapse1 = new Synapse("Cats", new LinkedHashSet<>(Collections.singletonList(rule1)));
+        final Synapse synapse2 = new Synapse("Cats", new LinkedHashSet<>(Collections.singletonList(rule2)));
+        final Synapse synapse3 = new Synapse("Ducks", new LinkedHashSet<>(Collections.singletonList(rule3)));
         NeoFuzzyNeuron neuron1 = new NeoFuzzyNeuron(new HashMap<String, Synapse>() {{
             put("Cats", synapse1);
         }});

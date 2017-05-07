@@ -15,23 +15,25 @@
  */
 package com.fixedorgo.neuron;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import static java.util.Arrays.asList;
 
 /**
- * Regular triangular fuzzy membership function.
- *
- * <p>Implements {@link MembershipFunction} interface
+ * Regular triangular fuzzy membership function that implements
+ * {@link MembershipFunction} interface. Instance is immutable.
  *
  * @author Timur Zagorsky
  * @since 0.1
  */
 public class TriangularMembershipFunction implements MembershipFunction {
 
-    private double a, b, c;
+    private final double a, b, c;
 
     public TriangularMembershipFunction(double a, double b, double c) {
+        if (a > b || b > c) {
+            throw new IllegalStateException(
+                    String.format("Incorrect parameters specified. Should be (a <= b) " +
+                            "and (b <= c), but was: [%s, %s, %s]", a, b, c));
+        }
         this.a = a;
         this.b = b;
         this.c = c;
@@ -39,8 +41,20 @@ public class TriangularMembershipFunction implements MembershipFunction {
 
     @Override
     public double apply(double x) {
-        return max(min((x - a) / (b - a), (c - x) / (c - b)), 0);
+        if (x >= a && x <= c) {
+            if (x < b) {
+                return (x - a) / (b - a);
+            }
+            if (x == b) {
+                return 1;
+            }
+            if (x < c) {
+                return (c - x) / (c - b);
+            }
+        }
+        return 0;
     }
+
 
     @Override
     public boolean equals(Object obj) {

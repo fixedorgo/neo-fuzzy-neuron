@@ -3,6 +3,7 @@ package com.fixedorgo.neuron;
 import com.fixedorgo.neuron.Synapse.SynapseBuilder;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -148,13 +149,21 @@ public class SynapseTest {
     }
 
     @Test
+    public void synapseBuildingStressTest() {
+        synapse("Length")
+                .withRange(Double.MIN_VALUE, Double.MAX_VALUE)
+                .withRulesCount(1000000)
+                .build();
+    }
+
+    @Test
     public void synapseEqualityTest() {
         ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule3 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));
-        Synapse synapse1 = new Synapse("Cats", new LinkedHashSet<>(asList(rule1)));
-        Synapse synapse2 = new Synapse("Dogs", new LinkedHashSet<>(asList(rule2)));
-        Synapse synapse3 = new Synapse("Ducks", new LinkedHashSet<>(asList(rule3)));
+        Synapse synapse1 = new Synapse("Cats", new LinkedHashSet<>(Collections.singletonList(rule1)));
+        Synapse synapse2 = new Synapse("Dogs", new LinkedHashSet<>(Collections.singletonList(rule2)));
+        Synapse synapse3 = new Synapse("Ducks", new LinkedHashSet<>(Collections.singletonList(rule3)));
         assertThat(synapse1).isEqualTo(synapse2).isNotEqualTo(synapse3);
     }
 
@@ -163,9 +172,9 @@ public class SynapseTest {
         ImplicationRule rule1 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule2 = new SingletonConsequentRule(new TriangularMembershipFunction(1, 2, 3));
         ImplicationRule rule3 = new SingletonConsequentRule(new TriangularMembershipFunction(2, 3, 4));
-        Synapse synapse1 = new Synapse("Cats", new LinkedHashSet<>(asList(rule1)));
-        Synapse synapse2 = new Synapse("Dogs", new LinkedHashSet<>(asList(rule2)));
-        Synapse synapse3 = new Synapse("Ducks", new LinkedHashSet<>(asList(rule3)));
+        Synapse synapse1 = new Synapse("Cats", new LinkedHashSet<>(Collections.singletonList(rule1)));
+        Synapse synapse2 = new Synapse("Dogs", new LinkedHashSet<>(Collections.singletonList(rule2)));
+        Synapse synapse3 = new Synapse("Ducks", new LinkedHashSet<>(Collections.singletonList(rule3)));
         assertThat(synapse1.hashCode()).isEqualTo(synapse2.hashCode()).isNotEqualTo(synapse3.hashCode());
     }
 
@@ -179,7 +188,8 @@ public class SynapseTest {
                 "\tRule: If 'x' is (2.0, 3.0, 4.0) then 'y' is 0.0\n");
     }
 
-    private LearningFunction function(final double input, final double output, final double trainingData, final double learningRate) {
+    private LearningFunction function(final double input, final double output,
+                                      final double trainingData, final double learningRate) {
         return new LearningFunction() {
             @Override
             public double apply(MembershipFunction membershipFunction) {

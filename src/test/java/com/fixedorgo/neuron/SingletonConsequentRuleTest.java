@@ -74,7 +74,8 @@ public class SingletonConsequentRuleTest {
         assertThat(rule.evaluate(input)).isEqualTo(desiredOutput);
     }
 
-    private LearningFunction withData(final double input, final double output, final double trainingData, final double learningRate) {
+    private LearningFunction withData(final double input, final double output,
+                                      final double trainingData, final double learningRate) {
         return new LearningFunction() {
             @Override
             public double apply(MembershipFunction membershipFunction) {

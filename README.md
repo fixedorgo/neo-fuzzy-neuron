@@ -9,7 +9,7 @@ While **API** documentation is in progress you can explore it via Maven Central.
 <dependency>
     <groupId>com.fixedorgo</groupId>
     <artifactId>neo-fuzzy-neuron</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
 </dependency>
 ```
 

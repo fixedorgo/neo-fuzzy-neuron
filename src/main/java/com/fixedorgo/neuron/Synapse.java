@@ -194,13 +194,13 @@ public class Synapse {
          */
         public Synapse build() {
             if (lower >= upper) {
-                throw new IllegalStateException(String.format("Input signal range [%s, %s] " +
-                        "is incorrectly specified.", lower, upper));
+                throw new IllegalStateException(
+                        String.format("Input signal range [%s, %s] is incorrectly specified.", lower, upper));
             }
             Set<ImplicationRule> rules = new LinkedHashSet<>();
             double step = (upper - lower) / (count - 1);
             for (int i = 0; i < count; i++) {
-                double b = lower + step * i;
+                double b = min(lower + step * i, upper);
                 double a = max(lower, b - step);
                 double c = min(upper, b + step);
                 rules.add(new SingletonConsequentRule(new TriangularMembershipFunction(a, b, c)));
